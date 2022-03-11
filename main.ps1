@@ -13,7 +13,6 @@ switch ($Type) {
    'ModulePath' {
       foreach ($module in $modules) {
          $item, $version = $module.Split(":")
-         Write-Output $item
          if ($env:RUNNER_OS -eq "Windows") {
             $modpath = "$env:ProgramFiles\PowerShell\Modules\$item"
             if ($Shell -eq "powershell") {
@@ -21,7 +20,7 @@ switch ($Type) {
             } elseif ($Shell -eq "pwsh") {
                $modpath
             } else {
-               $modpath.Replace("PowerShell","*PowerShell*"))
+               $modpath.Replace("PowerShell","*PowerShell*")
             }
          } else {
             $modpath = "/usr/local/share/powershell/Modules/$item"
