@@ -11,16 +11,16 @@ switch ($Type) {
       Write-Output "$env:RUNNER_OS-v4.5-$($shells -join "-")-$(($Module.Split(",") -join '-').Replace(' ',''))"
    }
    'ModulePath' {
-      foreach ($module in $modules) {
+      foreach ($mod in $Module) {
          $item, $version = $module.Split(":")
          if ($env:RUNNER_OS -eq "Windows") {
-            $modpath = "$env:ProgramFiles\PowerShell\Modules\$item"
+            $modpath = "$env:ProgramFiles\PowerShell\Modules\"
             if ($Shell -eq "powershell") {
-               $modpath.Replace("PowerShell","WindowsPowerShell")
+               $modpath.Replace("PowerShell","WindowsPowerShell") + $item
             } elseif ($Shell -eq "pwsh") {
-               $modpath
+               $modpath + $item
             } else {
-               $modpath.Replace("PowerShell","*PowerShell*")
+               $modpath.Replace("PowerShell","*PowerShell*") + $item
             }
          } else {
             $modpath = "/usr/local/share/powershell/Modules/$item"
