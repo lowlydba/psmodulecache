@@ -14,6 +14,7 @@ switch ($Type) {
       [System.Collections.ArrayList]$modpaths = @()
       foreach ($module in $modules) {
          $item, $version = $module.Split(":")
+         Write-Output $item
          if ($env:RUNNER_OS -eq "Windows") {
             $modpath = "$env:ProgramFiles\PowerShell\Modules\$item"
             if ($Shell -eq "powershell") {
@@ -29,6 +30,7 @@ switch ($Type) {
             $modpaths.Add($modpath)
          }
       }
+      Write-Output $modpaths
       return $modpaths
    }
    'SaveModule' {
