@@ -11,7 +11,7 @@ switch ($Type) {
       Write-Output "$env:RUNNER_OS-v4.5-$($shells -join "-")-$(($Module.Split(",") -join '-').Replace(' ',''))"
    }
    'ModulePath' {
-      foreach ($mod in $Module) {
+      foreach ($mod in $Module.Split(",").Trim()) {
          $item, $version = $mod.Split(":")
          if ($env:RUNNER_OS -eq "Windows") {
             $modpath = "$env:ProgramFiles\PowerShell\Modules\"
@@ -23,9 +23,9 @@ switch ($Type) {
                $modpath.Replace("PowerShell","*PowerShell*") + $item
             }
          } else {
-            $modpath = "/usr/local/share/powershell/Modules/$item"
+            $modpath = "/usr/local/share/powershell/Modules/"
             $null = sudo chown -R runner $modpath
-            $modpath
+            $modpath + $item
          }
       }
    }
