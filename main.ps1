@@ -11,27 +11,24 @@ switch ($Type) {
       Write-Output "$env:RUNNER_OS-v4.5-$($shells -join "-")-$(($Module.Split(",") -join '-').Replace(' ',''))"
    }
    'ModulePath' {
-      [System.Collections.ArrayList]$modpaths = @()
       foreach ($module in $modules) {
          $item, $version = $module.Split(":")
          Write-Output $item
          if ($env:RUNNER_OS -eq "Windows") {
             $modpath = "$env:ProgramFiles\PowerShell\Modules\$item"
             if ($Shell -eq "powershell") {
-               $modpaths.Add($modpath.Replace("PowerShell","WindowsPowerShell"))
+               $modpath.Replace("PowerShell","WindowsPowerShell")
             } elseif ($Shell -eq "pwsh") {
-               $modpaths.Add($modpath)
+               $modpath
             } else {
-               $modpaths.Add($modpath.Replace("PowerShell","*PowerShell*"))
+               $modpath.Replace("PowerShell","*PowerShell*"))
             }
          } else {
             $modpath = "/usr/local/share/powershell/Modules/$item"
             $null = sudo chown -R runner $modpath
-            $modpaths.Add($modpath)
+            $modpath
          }
       }
-      Write-Output $modpaths
-      return $modpaths
    }
    'SaveModule' {
       $moduleinfo = Import-CliXml -Path (Join-Path $home -ChildPath cache.xml)
