@@ -12,7 +12,7 @@ switch ($Type) {
    }
    'ModulePath' {
       foreach ($mod in $Module) {
-         $item, $version = $module.Split(":")
+         $item, $version = $mod.Split(":")
          if ($env:RUNNER_OS -eq "Windows") {
             $modpath = "$env:ProgramFiles\PowerShell\Modules\"
             if ($Shell -eq "powershell") {
